@@ -1,0 +1,76 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #003c78;
+}
+
+#Window {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    border-radius: 16px;
+    background: radial-gradient(circle, #1a1a2e, #121220);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #9d00ff;
+    text-shadow:
+        0px 0px 5px #fff,
+        0px 0px 10px #fff,
+        0px 0px 20px #ffffff,
+        0px 0px 40px #9d00ff,
+        0px 0px 80px #9d00ff;
+}
+
+input {
+    background-color: #000000;
+    border: 1px solid cyan;
+    color: #ffffff;
+}
+
+#Content {
+    text-align: center;
+    padding: 30px;
+    padding-bottom: 40px;
+    border-radius: 12px;
+    background-color: #b9b9b9ad;
+}
+
+#Minimum,
+#Maximum {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f0f0f0;
+    margin: 0 10px;
+}
+
+#GenerateBtn {
+    text-align: center;
+    padding: 5px 10px;
+    font-size: 24px;
+    border-radius: 8px;
+    border: 1px solid #0000005b;
+    background: linear-gradient(135deg, #ff007f, #ffae00);
+    cursor: pointer;
+}
+
+#GenerateBtn:hover {
+    background: linear-gradient(135deg, #ffae00, #ff007f);
+    box-shadow: 0 0 15px #ffae00, 0 0 30px #ff007f;
+    transform: scale(1.05);
+}
+
+
+#Number {
+    font-size: 48px;
+    font-weight: bold;
+    color: #39ff14;
+}
