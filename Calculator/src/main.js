@@ -115,6 +115,7 @@ document.getElementById("backspace").onclick = function () {
     expression = expression.slice(0, -1);
     input.textContent = expression;
 };
+// Keyboard support
 document.addEventListener("keydown", function (event) {
     let key = event.key;
 
