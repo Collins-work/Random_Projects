@@ -1,0 +1,16 @@
+{
+    "name": "Clinex Notes",
+    "short_name": "Clinex Notes",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#0f172a",
+    "description": "A cosmic, offline-first notes PWA for students to take long, short, and key notes.",
+    "icons": [
+        {
+            "src": "/public/Note.png",
+            "sizes": "any",
+            "type": "image/png"
+        }
+    ]
+}

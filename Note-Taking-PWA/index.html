@@ -5,16 +5,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Clinex Notes</title>
-  <link rel="manifest" href="manifest.json" />
+  <link rel="manifest" href="/src/manifest.json" />
   <meta name="theme-color" content="#0f172a" />
-  <link rel="icon" href="/icons/Note.png" />
-  <link rel="apple-touch-icon" href="/icons/Note.png" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="/public/Note.png" />
+  <link rel="apple-touch-icon" href="/public/Note.png" />
+  <link rel="stylesheet" href="/src/style.css" />
 </head>
 
 <body>
   <header class="app-header">
-    <h1>Offline Notes</h1>
+    <h1>Clinex Notes</h1>
     <button id="installBtn" class="btn" aria-label="Install app" hidden>
       Install
     </button>
@@ -26,8 +26,14 @@
       <form id="noteForm" autocomplete="off">
         <label for="title" class="sr-only">Title</label>
         <input id="title" name="title" type="text" placeholder="Title" required />
+        <label for="type" class="sr-only">Note Type</label>
+        <select id="type" name="type" class="note-type">
+          <option value="short">Short Note</option>
+          <option value="long">Long Note</option>
+          <option value="key">Key Note</option>
+        </select>
         <label for="content" class="sr-only">Content</label>
-        <textarea id="content" name="content" placeholder="Write your note..." rows="6" required></textarea>
+        <textarea id="content" name="content" placeholder="Write your note..." rows="10" required></textarea>
         <div class="actions">
           <button type="submit" class="btn primary">Save</button>
           <button type="reset" class="btn">Clear</button>
@@ -38,6 +44,7 @@
 
     <section class="note-list" aria-labelledby="listTitle">
       <h2 id="listTitle">Your notes</h2>
+      <input id="search" type="text" placeholder="Search notes..." class="search-input" />
       <ul id="notes" class="notes" role="list"></ul>
     </section>
   </main>
@@ -46,8 +53,8 @@
     <small>Made by Clinex with ❤️</small>
   </footer>
 
-  <script src="idb.js"></script>
-  <script src="app.js" type="module"></script>
+  <script src="src/idb.js"></script>
+  <script src="src/app.js" type="module"></script>
 </body>
 
 </html>

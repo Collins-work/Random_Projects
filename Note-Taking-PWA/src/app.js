@@ -4,12 +4,13 @@ const form = document.getElementById('noteForm');
 const notesEl = document.getElementById('notes');
 const statusEl = document.getElementById('status');
 const installBtn = document.getElementById('installBtn');
+const searchEl = document.getElementById('search');
 
 let deferredPrompt = null;
 
 // Service worker registration
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(console.error);
+  navigator.serviceWorker.register('./src/sw.js').catch(console.error);
 }
 
 // Install prompt
@@ -42,11 +43,12 @@ form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const title = form.title.value.trim();
   const content = form.content.value.trim();
+  const type = form.type.value;
   if (!title || !content) return;
 
-  const note = { id: crypto.randomUUID(), title, content, updatedAt: Date.now() };
+  const note = { id: crypto.randomUUID(), title, content, type, updatedAt: Date.now() };
   await put('notes', note);
-  renderNotes();
+  renderNotes(searchEl.value.trim());
 
   // Queue for sync (simulate server)
   await put('outbox', { ...note, op: 'upsert' });
@@ -54,18 +56,27 @@ form.addEventListener('submit', async (e) => {
   setStatus(navigator.onLine ? 'Saved and synced.' : 'Saved offline. Will sync when online.');
 });
 
-async function renderNotes() {
-  const notes = (await getAll('notes')).sort((a, b) => b.updatedAt - a.updatedAt);
+form.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.key === 'Enter') {
+    e.preventDefault();
+    form.dispatchEvent(new Event('submit'));
+  }
+});
+
+async function renderNotes(filter = '') {
+  const allNotes = (await getAll('notes')).sort((a, b) => b.updatedAt - a.updatedAt);
+  const notes = filter ? allNotes.filter(n => n.title.toLowerCase().includes(filter.toLowerCase()) || n.content.toLowerCase().includes(filter.toLowerCase())) : allNotes;
   notesEl.innerHTML = '';
   for (const n of notes) {
     const li = document.createElement('li');
-    li.className = 'note';
+    li.className = `note ${n.type}`;
     li.innerHTML = `
-      <h3>${escapeHTML(n.title)}</h3>
+      <h3>${escapeHTML(n.title)} <span class="note-type-badge">${n.type}</span></h3>
       <p>${escapeHTML(n.content)}</p>
       <span class="badge">${new Date(n.updatedAt).toLocaleString()}</span>
       <div class="row">
         <button class="btn" data-id="${n.id}" data-action="edit">Edit</button>
+        <button class="btn" data-id="${n.id}" data-action="key">Key Note</button>
         <button class="btn" data-id="${n.id}" data-action="delete">Delete</button>
       </div>
     `;
@@ -82,8 +93,16 @@ notesEl.addEventListener('click', async (e) => {
   if (action === 'delete') {
     await del('notes', id);
     await put('outbox', { id, op: 'delete' });
-    renderNotes();
+    renderNotes(searchEl.value.trim());
     setStatus(navigator.onLine ? 'Deleted and synced.' : 'Deleted offline. Will sync later.');
+  }
+  if (action === 'key') {
+    const all = await getAll('notes');
+    const note = all.find(n => n.id === id);
+    if (!note) return;
+    form.type.value = 'key';
+    form.title.value = `Key: ${note.title}`;
+    form.content.focus();
   }
   if (action === 'edit') {
     const all = await getAll('notes');
@@ -91,6 +110,7 @@ notesEl.addEventListener('click', async (e) => {
     if (!note) return;
     form.title.value = note.title;
     form.content.value = note.content;
+    form.type.value = note.type;
     // Replace on submit
     const handler = async (ev) => {
       ev.preventDefault();
@@ -98,11 +118,12 @@ notesEl.addEventListener('click', async (e) => {
         id,
         title: form.title.value.trim(),
         content: form.content.value.trim(),
+        type: form.type.value,
         updatedAt: Date.now()
       };
       await put('notes', updated);
       await put('outbox', { ...updated, op: 'upsert' });
-      renderNotes();
+      renderNotes(searchEl.value.trim());
       setStatus(navigator.onLine ? 'Updated and synced.' : 'Updated offline. Will sync later.');
       form.reset();
       form.removeEventListener('submit', handler);
@@ -132,6 +153,6 @@ function escapeHTML(str) {
   return String(str).replace(/[&<>"']/g, m => map[m]);
 }
 
-// Initial render
-renderNotes();
-if (!navigator.onLine) setStatus('Offline. Notes available from cache.');
+searchEl.addEventListener('input', () => {
+  renderNotes(searchEl.value.trim());
+});
