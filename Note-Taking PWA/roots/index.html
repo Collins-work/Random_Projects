@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Clinex Notes</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0f172a" />
+  <link rel="icon" href="/icons/Note.png" />
+  <link rel="apple-touch-icon" href="/icons/Note.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="app-header">
+    <h1>Offline Notes</h1>
+    <button id="installBtn" class="btn" aria-label="Install app" hidden>
+      Install
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="note-editor" aria-labelledby="editorTitle">
+      <h2 id="editorTitle">Create note</h2>
+      <form id="noteForm" autocomplete="off">
+        <label for="title" class="sr-only">Title</label>
+        <input id="title" name="title" type="text" placeholder="Title" required />
+        <label for="content" class="sr-only">Content</label>
+        <textarea id="content" name="content" placeholder="Write your note..." rows="6" required></textarea>
+        <div class="actions">
+          <button type="submit" class="btn primary">Save</button>
+          <button type="reset" class="btn">Clear</button>
+        </div>
+      </form>
+      <p id="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="note-list" aria-labelledby="listTitle">
+      <h2 id="listTitle">Your notes</h2>
+      <ul id="notes" class="notes" role="list"></ul>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>Made by Clinex with ❤️</small>
+  </footer>
+
+  <script src="idb.js"></script>
+  <script src="app.js" type="module"></script>
+</body>
+
+</html>
