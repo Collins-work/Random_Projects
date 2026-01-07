@@ -10,7 +10,7 @@ let deferredPrompt = null;
 
 // Service worker registration
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./src/sw.js').catch(console.error);
+  navigator.serviceWorker.register('./sw.js').catch(console.error);
 }
 
 // Install prompt
