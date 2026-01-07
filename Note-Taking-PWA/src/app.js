@@ -10,7 +10,9 @@ let deferredPrompt = null;
 
 // Service worker registration
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(console.error);
+  navigator.serviceWorker.register('https://note-taking-pwa-three.vercel.app/sw.js', {
+    scope: 'https://note-taking-pwa-three.vercel.app/'
+  }).catch(console.error);
 }
 
 // Install prompt
