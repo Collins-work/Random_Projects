@@ -1,12 +1,12 @@
 const CACHE_NAME = 'offline-notes-v3';
 const STATIC_ASSETS = [
-    './',
-    './index.html',
-    './src/style.css',
-    './src/app.js',
-    './src/idb.js',
-    './manifest.json',
-    './public/Note.png'
+    '/',
+    '/index.html',
+    '/style.css',
+    '/src/app.js',
+    '/src/idb.js',
+    '/manifest.json',
+    '/public/Note.png'
 ];
 
 self.addEventListener('install', (event) => {
