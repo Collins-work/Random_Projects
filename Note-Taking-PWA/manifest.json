@@ -3,7 +3,6 @@
     "short_name": "Clinex Notes",
     "start_url": "https://note-taking-pwa-three.vercel.app/",
     "display": "standalone",
-    "scope": "/",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
     "description": "A cosmic, offline-first notes PWA for students to take long, short, and key notes.",
