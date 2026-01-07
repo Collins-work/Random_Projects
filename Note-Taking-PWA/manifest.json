@@ -9,12 +9,12 @@
     "description": "A Note-Taking PWA for students to take notes in class seamlessly in various forms either short, long or key notes.",
     "icons": [
         {
-            "src": "/Note.png",
+            "src": "/public/Note.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/Note.png",
+            "src": "/public/Note.png",
             "sizes": "512x512",
             "type": "image/png"
         }

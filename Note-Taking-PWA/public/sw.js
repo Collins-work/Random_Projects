@@ -6,7 +6,7 @@ const STATIC_ASSETS = [
     './src/app.js',
     './src/idb.js',
     './manifest.json',
-    './Note.png'
+    './public/Note.png'
 ];
 
 self.addEventListener('install', (event) => {
