@@ -5,9 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="desktop-web-app-capable" content="yes">
-  <meta name="desktop-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Clinex Notes">
+  <meta name="apple-mobile-web-app-title" content="ClinexNotes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>ClinexNotes</title>
   <link rel="manifest" href="/manifest.json" />
@@ -19,7 +17,10 @@
 
 <body>
   <header class="app-header">
-    <h1>Clinex Notes</h1>
+    <div class="app-title-logo">
+      <img src="/public/Note.png" alt="ClinexNotes Logo" class="logo" />
+      <h1 class="app-title">ClinexNotes</h1>
+    </div>
     <button id="installBtn" class="btn" aria-label="Install app" hidden>
       Install
     </button>

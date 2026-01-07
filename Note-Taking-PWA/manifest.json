@@ -1,15 +1,20 @@
 {
-    "name": "Clinex Notes",
-    "short_name": "Clinex Notes",
+    "name": "ClinexNotes",
+    "short_name": "ClinexNotes",
     "start_url": "https://note-taking-pwa-three.vercel.app/",
     "display": "standalone",
     "background_color": "#0f172a",
     "theme_color": "#0f172a",
-    "description": "A cosmic, offline-first notes PWA for students to take long, short, and key notes.",
+    "description": "A Note-Taking PWA for students to take notes in class seamlessly in various forms either short, long or key notes.",
     "icons": [
         {
-            "src": "/public/Note_resized.png",
-            "sizes": "192x192 512x512",
+            "src": "/public/Note.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/public/Note.png",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ]

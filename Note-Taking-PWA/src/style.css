@@ -44,9 +44,25 @@ body::before {
   pointer-events: none;
 }
 
+.logo {
+  width: 40px;
+  height: 40px;
+}
+
+.app-title {
+  margin: 0;
+}
+
+.app-title-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .app-header,
 .app-footer {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.25rem;
