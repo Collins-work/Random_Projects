@@ -1,8 +1,9 @@
 {
-  "name": "note-taking-pwa",
+  "name": "clinexnotes-pwa",
   "author": "Ilekuba Collins(Clinex)",
+  "description": "A cosmic, offline-first notes PWA with Gmail sign-in and cloud sync",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

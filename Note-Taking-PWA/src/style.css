@@ -235,3 +235,48 @@ textarea::placeholder {
   border-left: 5px solid #ffd93d;
   background: rgba(255, 217, 61, 0.1);
 }
+
+/* User authentication styles */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-photo {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+}
+
+.user-name {
+  font-size: 0.9rem;
+  color: var(--text);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .user-section {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .user-name {
+    max-width: 100px;
+  }
+}

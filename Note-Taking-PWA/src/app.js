@@ -1,12 +1,24 @@
 import { put, getAll, del } from './idb.js';
+import { initAuth, signInWithGoogle, signOut, isAuthenticated } from './auth.js';
+import {
+  syncNoteToCloud,
+  deleteNoteFromCloud,
+  syncAllNotesToCloud,
+  syncCloudNotesToLocal,
+  setupCloudListener
+} from './cloud-sync.js';
 
 const form = document.getElementById('noteForm');
 const notesEl = document.getElementById('notes');
 const statusEl = document.getElementById('status');
-const installBtn = document.getElementById('installBtn');
 const searchEl = document.getElementById('search');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const userInfo = document.getElementById('userInfo');
+const userName = document.getElementById('userName');
+const userPhoto = document.getElementById('userPhoto');
 
-let deferredPrompt = null;
+let cloudListener = null;
 
 // Service worker registration
 if ('serviceWorker' in navigator) {
@@ -15,31 +27,83 @@ if ('serviceWorker' in navigator) {
   }).catch(console.error);
 }
 
-// Install prompt
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.hidden = false;
+// Initialize authentication
+initAuth(async (user) => {
+  if (user) {
+    // User is signed in
+    loginBtn.hidden = true;
+    userInfo.hidden = false;
+    userName.textContent = user.displayName || user.email;
+    userPhoto.src = user.photoURL || '/public/Note.png';
+
+    setStatus('Syncing notes from cloud...');
+    await syncCloudNotesToLocal();
+    await renderNotes(searchEl.value.trim());
+
+    // Set up real-time listener
+    cloudListener = setupCloudListener(() => {
+      renderNotes(searchEl.value.trim());
+    });
+
+    setStatus('Signed in and synced!');
+  } else {
+    // User is signed out
+    loginBtn.hidden = false;
+    userInfo.hidden = true;
+
+    // Stop cloud listener
+    if (cloudListener) {
+      cloudListener();
+      cloudListener = null;
+    }
+
+    await renderNotes(searchEl.value.trim());
+    setStatus('Signed out. Notes are stored locally.');
+  }
 });
-installBtn.addEventListener('click', async () => {
-  installBtn.hidden = true;
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
+
+// Login/Logout handlers
+loginBtn.addEventListener('click', async () => {
+  try {
+    setStatus('Signing in...');
+    await signInWithGoogle();
+  } catch (error) {
+    setStatus('Sign in failed. Please try again.');
+    console.error(error);
+  }
+});
+
+logoutBtn.addEventListener('click', async () => {
+  try {
+    await signOut();
+  } catch (error) {
+    setStatus('Sign out failed.');
+    console.error(error);
   }
 });
 
 // Online/offline UI feedback
 function setStatus(text) {
   statusEl.textContent = text;
+  setTimeout(() => {
+    if (statusEl.textContent === text) {
+      statusEl.textContent = '';
+    }
+  }, 3000);
 }
+
 window.addEventListener('online', async () => {
-  setStatus('Back online. Syncing…');
-  await syncOutbox();
-  setStatus('Synced.');
+  setStatus('Back online.');
+  if (isAuthenticated()) {
+    setStatus('Back online. Syncing to cloud...');
+    await syncAllNotesToCloud();
+    setStatus('Synced to cloud.');
+  }
 });
-window.addEventListener('offline', () => setStatus('Offline. Changes will sync later.'));
+
+window.addEventListener('offline', () => {
+  setStatus('Offline. Notes will be saved locally.');
+});
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -49,13 +113,20 @@ form.addEventListener('submit', async (e) => {
   if (!title || !content) return;
 
   const note = { id: crypto.randomUUID(), title, content, type, updatedAt: Date.now() };
-  await put('notes', note);
-  renderNotes(searchEl.value.trim());
 
-  // Queue for sync (simulate server)
-  await put('outbox', { ...note, op: 'upsert' });
+  // Save locally
+  await put('notes', note);
+
+  // Sync to cloud if authenticated
+  if (isAuthenticated()) {
+    await syncNoteToCloud(note);
+    setStatus('Saved and synced to cloud.');
+  } else {
+    setStatus('Saved locally.');
+  }
+
+  renderNotes(searchEl.value.trim());
   form.reset();
-  setStatus(navigator.onLine ? 'Saved and synced.' : 'Saved offline. Will sync when online.');
 });
 
 form.addEventListener('keydown', (e) => {
@@ -94,9 +165,16 @@ notesEl.addEventListener('click', async (e) => {
 
   if (action === 'delete') {
     await del('notes', id);
-    await put('outbox', { id, op: 'delete' });
+
+    // Delete from cloud if authenticated
+    if (isAuthenticated()) {
+      await deleteNoteFromCloud(id);
+      setStatus('Deleted and synced to cloud.');
+    } else {
+      setStatus('Deleted locally.');
+    }
+
     renderNotes(searchEl.value.trim());
-    setStatus(navigator.onLine ? 'Deleted and synced.' : 'Deleted offline. Will sync later.');
   }
   if (action === 'key') {
     const all = await getAll('notes');
@@ -124,9 +202,16 @@ notesEl.addEventListener('click', async (e) => {
         updatedAt: Date.now()
       };
       await put('notes', updated);
-      await put('outbox', { ...updated, op: 'upsert' });
+
+      // Sync to cloud if authenticated
+      if (isAuthenticated()) {
+        await syncNoteToCloud(updated);
+        setStatus('Updated and synced to cloud.');
+      } else {
+        setStatus('Updated locally.');
+      }
+
       renderNotes(searchEl.value.trim());
-      setStatus(navigator.onLine ? 'Updated and synced.' : 'Updated offline. Will sync later.');
       form.reset();
       form.removeEventListener('submit', handler);
       form.addEventListener('submit', submitDefault, { once: true });
@@ -138,18 +223,6 @@ notesEl.addEventListener('click', async (e) => {
   }
 });
 
-async function syncOutbox() {
-  const items = await getAll('outbox');
-  if (!items.length) return;
-
-  // Simulate syncing with server by waiting, then clearing
-  await new Promise(res => setTimeout(res, 400));
-  // In real app, send to API and on success, clear from outbox
-  for (const item of items) {
-    await del('outbox', item.id);
-  }
-}
-
 function escapeHTML(str) {
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
   return String(str).replace(/[&<>"']/g, m => map[m]);
@@ -158,3 +231,6 @@ function escapeHTML(str) {
 searchEl.addEventListener('input', () => {
   renderNotes(searchEl.value.trim());
 });
+
+// Initial render
+renderNotes();

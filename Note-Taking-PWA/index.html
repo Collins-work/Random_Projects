@@ -13,6 +13,11 @@
   <link rel="apple-touch-icon" href="/public/Note.png" />
   <link rel="stylesheet" href="/src/style.css" />
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DXSF6ZLK6D"></script>
   <script>
@@ -31,9 +36,16 @@
       <img src="/public/Note.png" alt="ClinexNotes Logo" class="logo" />
       <h1 class="app-title">ClinexNotes</h1>
     </div>
-    <button id="installBtn" class="btn" aria-label="Install app" hidden>
-      Install
-    </button>
+    <div class="user-section">
+      <button id="loginBtn" class="btn" aria-label="Sign in with Google">
+        Sign in with Google
+      </button>
+      <div id="userInfo" class="user-info" hidden>
+        <img id="userPhoto" class="user-photo" alt="User" />
+        <span id="userName" class="user-name"></span>
+        <button id="logoutBtn" class="btn" aria-label="Sign out">Sign out</button>
+      </div>
+    </div>
   </header>
 
   <main class="container">
