@@ -5,13 +5,16 @@ export default defineConfig({
     build: {
         outDir: 'dist',
         emptyOutDir: true,
-        copyPublicDir: true,
         rollupOptions: {
             input: {
                 main: './index.html'
+            },
+            output: {
+                manualChunks: undefined
             }
         }
     },
+    publicDir: 'public',
     server: {
         open: true,
         host: true
