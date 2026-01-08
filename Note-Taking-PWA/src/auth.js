@@ -44,3 +44,23 @@ export function getCurrentUser() {
 export function isAuthenticated() {
     return currentUser !== null;
 }
+
+// Sign out
+export async function signOut() {
+    try {
+        await auth.signOut();
+    } catch (error) {
+        console.error('Error signing out:', error);
+        throw error;
+    }
+}
+
+// Get current user
+export function getCurrentUser() {
+    return currentUser;
+}
+
+// Check if user is authenticated
+export function isAuthenticated() {
+    return currentUser !== null;
+}
