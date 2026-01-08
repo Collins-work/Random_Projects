@@ -19,21 +19,6 @@ const userName = document.getElementById('userName');
 const userPhoto = document.getElementById('userPhoto');
 
 let cloudListener = null;
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
-const auth = getAuth();
-const provider = new GoogleAuthProvider();
-
-signInWithPopup(auth, provider).then((result) => {
-  const user = result.user;
-
-  // Send event to Google Analytics
-  gtag('event', 'google_sign_in', {
-    event_category: 'authentication',
-    event_label: user.email
-  });
-});
-
 
 // Service worker registration
 if ('serviceWorker' in navigator) {
@@ -90,6 +75,14 @@ loginBtn.addEventListener('click', async () => {
   try {
     setStatus('Signing in...');
     await signInWithGoogle();
+
+    // Send event to Google Analytics
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'google_sign_in', {
+        event_category: 'authentication',
+        event_label: 'user_signed_in'
+      });
+    }
   } catch (error) {
     setStatus('Sign in failed. Please try again.');
     console.error(error);
