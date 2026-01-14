@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#E8F4F8" stroke="#2C3E50" stroke-width="3"/>
+  
+  <!-- Form/Document background -->
+  <rect x="50" y="40" width="100" height="130" rx="8" fill="#FFFFFF" stroke="#3498DB" stroke-width="2.5"/>
+  
+  <!-- Form lines (representing text) -->
+  <line x1="65" y1="60" x2="135" y2="60" stroke="#3498DB" stroke-width="2" stroke-linecap="round"/>
+  <line x1="65" y1="75" x2="135" y2="75" stroke="#BDC3C7" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="65" y1="87" x2="120" y2="87" stroke="#BDC3C7" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- User/Person icon -->
+  <circle cx="100" cy="105" r="12" fill="#2ECC71" stroke="#27AE60" stroke-width="1.5"/>
+  
+  <!-- User icon body -->
+  <path d="M 85 125 Q 85 120 100 120 Q 115 120 115 125 L 115 138 Q 115 140 113 140 L 87 140 Q 85 140 85 138 Z" fill="#2ECC71" stroke="#27AE60" stroke-width="1.5"/>
+  
+  <!-- Checkmark accent -->
+  <g transform="translate(140, 155)">
+    <circle cx="0" cy="0" r="12" fill="#2ECC71" stroke="#27AE60" stroke-width="1.5"/>
+    <path d="M -5 0 L -1 4 L 6 -3" stroke="#FFFFFF" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
