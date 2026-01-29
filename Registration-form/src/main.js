@@ -1,18 +1,12 @@
-import './style.css'
-
-const Nameinput = document.getElementById("Nameinput");
-const Emailinput = document.getElementById("Emailinput");
-const Name_error = document.getElementById("Name-error");
-const Email_error = document.getElementById("Email-error");
-const Selection = document.getElementById("Selection");
-const option1 = document.getElementById("select-option");
 const submitbtn = document.getElementById("submitbtn");
+const Name_error = document.getElementById("Name_error");
+const Email_error = document.getElementById("Email_error");
+const Selection_tag = document.getElementById("Selection_tag");
+const select_option = document.getElementById("select_option");
 
 submitbtn.onclick = function () {
-  if (Nameinput === "") {
-    Name_error.style.display = "none";
-  } else {
-    Name_error.style.display = "block";
+  if (!Name_error === '' || !Email_error === '' || !Selection_tag === select_option) {
+    window.alert("This form has been submitted!!")
   }
 
 }

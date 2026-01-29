@@ -1,6 +1,6 @@
 {
   "name": "clinexnotes-pwa",
-  "author": "Ilekuba Oluebube Collins(Clinex)",
+  "author": "Ilekuba Collins(Clinex)",
   "description": "A cosmic, offline-first notes PWA with Gmail sign-in and cloud sync",
   "private": true,
   "version": "2.0.0",

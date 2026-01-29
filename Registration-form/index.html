@@ -14,24 +14,25 @@
     <form>
       <label for="Nameinput">Name</label>
       <input id="Nameinput" type="text" placeholder="Enter your name..">
-      <p id="Name-error">Name is required to fill this form!</p><br>
+      <p id="Name_error">This field is required</p><br>
 
       <label for="Emailinput">Email</label>
       <input id="Emailinput" type="email" placeholder="Enter you Email..">
-      <p id="Email-error">E-mail is required to fill this form!</p><br>
+      <p id="Email_error">This field is required</p><br>
 
       <label>Career Path</label>
-      <select id="Selection">
-        <option id="select-option" value="none">Select an option</option>
+      <select id="Selection_tag">
+        <option id="select_option" value="none">Select an option</option>
         <option value="front-end-development">Front-end Development</option>
         <option value="back-end-development">Back-end Development</option>
         <option value="ai-automtion-engineer">AI Automation Engineer</option>
         <option value="no-path">No Path Yet</option>
       </select><br>
-      <button type="submit" id="submitbtn">Submit</button>
+      <button type="button" id="submitbtn">Submit</button>
     </form>
   </div>
-  <script type="module" src="/src/main.js"></script>
+
+  <script src="/src/main.js"></script>
 </body>
 
 </html>
